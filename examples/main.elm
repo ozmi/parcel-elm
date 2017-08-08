@@ -27,6 +27,11 @@ type alias Model =
     }
 
 
+type TreeNode a
+    = Branch a (List (TreeNode a))
+    | Leaf a
+
+
 root : TypeLit
 root =
     Module
@@ -38,6 +43,14 @@ root =
                     ]
                 )
           )
+        ]
+
+
+myTree : TreeNode String
+myTree =
+    Branch "root"
+        [ Leaf "a"
+        , Leaf "b"
         ]
 
 
@@ -93,10 +106,10 @@ viewTypeLit path typeLit =
                             childPath =
                                 List.append path [ name ]
                         in
-                        li []
-                            [ span [ onClick (SelectTypePath childPath) ] [ text (snakeCase name) ]
-                            , viewTypeExp childPath tpe
-                            ]
+                            li []
+                                [ span [ onClick (SelectTypePath childPath) ] [ text (snakeCase name) ]
+                                , viewTypeExp childPath tpe
+                                ]
                     )
                     subTypes
                 )
