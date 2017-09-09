@@ -1,0 +1,7 @@
+{
+    "tag": "record",
+    "fields": [
+        ["foo", {"tag": "record", "fields": []}],
+        ["bar", {"tag": "record", "fields": []}]
+    ]
+}

@@ -1,5 +1,6 @@
 module Franka.Name exposing (..)
 
+import Json.Decode exposing (..)
 import Regex exposing (..)
 import String exposing (join, words)
 
@@ -18,3 +19,8 @@ fromString string =
 snakeCase : Name -> String
 snakeCase name =
     join "_" name
+
+
+nameDecoder : Decoder Name
+nameDecoder =
+    map fromString string
