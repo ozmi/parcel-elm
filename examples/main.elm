@@ -49,23 +49,9 @@ root =
         ]
 
 
-<<<<<<< HEAD
 init : ( Model, Cmd Msg )
 init =
     ( Model (fromString "") "" root, Cmd.none )
-=======
-myTree : TreeNode String
-myTree =
-    Branch "root"
-        [ Leaf "a"
-        , Leaf "b"
-        ]
-
-
-model : Model
-model =
-    Model (fromString "") "" root
->>>>>>> e3ec6ecd7800df90d8047f2a82264b7b72e4d71b
 
 
 
