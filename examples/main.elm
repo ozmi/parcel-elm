@@ -5,14 +5,17 @@ import Franka.Name exposing (..)
 import Html exposing (..)
 import Html.Attributes exposing (..)
 import Html.Events exposing (onClick, onInput)
+import Http
+import Json.Decode as Decode
 import String
 
 
 main =
-    Html.beginnerProgram
-        { model = model
+    Html.program
+        { init = init
         , view = view
         , update = update
+        , subscriptions = subscriptions
         }
 
 
@@ -41,9 +44,9 @@ root =
         ]
 
 
-model : Model
-model =
-    Model (fromString "") "" root
+init : ( Model, Cmd Msg )
+init =
+    ( Model (fromString "") "" root, Cmd.none )
 
 
 
@@ -53,16 +56,36 @@ model =
 type Msg
     = Change String
     | SelectTypePath (List Name)
+    | ServerRequest
+    | ServerResponse (Result Http.Error String)
 
 
-update : Msg -> Model -> Model
+update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
     case msg of
         Change newContent ->
-            { model | content = fromString newContent }
+            ( { model | content = fromString newContent }, Cmd.none )
 
         SelectTypePath path ->
-            { model | selection = String.join "." (List.map snakeCase path) }
+            ( { model | selection = String.join "." (List.map snakeCase path) }, Cmd.none )
+
+        ServerRequest ->
+            ( model, Http.send ServerResponse (Http.get "test.txt" Decode.string) )
+
+        ServerResponse (Ok data) ->
+            ( { model | selection = data }, Cmd.none )
+
+        ServerResponse (Err _) ->
+            ( { model | selection = "error" }, Cmd.none )
+
+
+
+-- SUBSCRIPTIONS
+
+
+subscriptions : Model -> Sub Msg
+subscriptions model =
+    Sub.none
 
 
 
@@ -79,6 +102,7 @@ view model =
             ]
         , text model.selection
         , viewTypeLit [] model.rootType
+        , button [ onClick ServerRequest ] [ text "Request" ]
         ]
 
 
