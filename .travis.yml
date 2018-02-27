@@ -3,6 +3,6 @@ node_js:
   - "node"
 
 before_install:
-  - "npm install elm@0.18.0"
+  - "npm install elm@VERSION"
 
 script: elm make --yes
