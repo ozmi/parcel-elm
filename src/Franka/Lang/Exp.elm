@@ -10,9 +10,13 @@ type Exp a
   | Let Name (Exp a) (Exp a)
   | Select (Exp a) (Selector a)
   | Branch (Exp a) (List ((Selector a), (Exp a)))
-  
+  | Lookup LibraryRef (List Name)
 
 type Selector a
   = SelectIndex Int
   | SelectName Name
   | SelectValue a
+  
+type LibraryRef
+  = ThisLibrary
+  | ExternalLibrary String String
